@@ -1,0 +1,1 @@
+void manchesterWrite(char c);

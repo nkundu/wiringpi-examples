@@ -44,7 +44,8 @@ SRC	=	blink.c blink8.c blink12.c					\
 		softPwm.c softTone.c 						\
 		delayTest.c serialRead.c serialTest.c okLed.c ds1302.c		\
 		lowPower.c							\
-		rht03.c piglow.c
+		rht03.c piglow.c                                                \
+                manchester.c
 
 OBJ	=	$(SRC:.c=.o)
 
@@ -57,9 +58,9 @@ all:
 
 really-all:	$(BINS)
 
-blink:	blink.o
+blink:	blink.o manchester.o
 	@echo [link]
-	@$(CC) -o $@ blink.o $(LDFLAGS) $(LDLIBS)
+	@$(CC) -o $@ blink.o manchester.o $(LDFLAGS) $(LDLIBS)
 
 blink8:	blink8.o
 	@echo [link]

@@ -25,6 +25,7 @@
 
 #include <stdio.h>
 #include <wiringPi.h>
+#include "manchester.h"
 
 // LED Pin - wiringPi pin 0 is BCM_GPIO 17.
 
@@ -62,6 +63,7 @@ int main (void)
 
   for (;;)
   {
+    manchesterWrite(c);
     c = getchar();
     printf ("wrote 0x%08X\n", c);
     for (i = 7; i >= 0; i--)

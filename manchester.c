@@ -1,0 +1,4 @@
+void manchesterWrite(char c)
+{
+
+}
