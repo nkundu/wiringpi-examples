@@ -10,10 +10,7 @@ void manchesterWritePreamble(int T, void (*delay)(unsigned int), void (*setLow)(
 {
 	char c;
 
-	c = 0xFF;
-	manchesterWrite(c, T, delay, setLow, setHigh);
-
-	c = 0xF0;
+	c = 0b11111110;
 	manchesterWrite(c, T, delay, setLow, setHigh);
 
 }

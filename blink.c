@@ -12,21 +12,21 @@
 #define DELAY   (20)
 #define BUFSZ   (10)
 
-unsigned int read = 0;
-void myInterrupt1(void) { read = millis() - read; };
-
-PI_THREAD  (readClock)
+unsigned int last_read = 0;
+enum decoder_state { START, START1, MID1, START0, MID0 };
+enum decoder_state current_state = START;
+void myInterrupt1(void) 
 {
-  //char buf[BUFSZ];
-  //int result;
-  //result = manchesterRead(DELAY, &(buf[0]), BUFSZ, &read, delay);
-  int i;
-  for (i = 0;;i++)
-  {
-    delay(DELAY/2);
-    printf("read %d ", read);
-  }
-}
+  unsigned int now = millis();
+  int pin_state;
+  int read;
+  read = now - last_read;
+  last_read = now;
+  pin_state = digitalRead(PIN_R);
+
+  
+  printf("read %d state %d ", read < 1.5*DELAY ? 1 : 0, pin_state);
+};
 
 void setLow()
 {
@@ -45,7 +45,6 @@ int main (void)
   printf ("Raspberry Pi slow radio link\n") ;
 
   wiringPiSetup () ;
-  i = piThreadCreate(readClock);
   wiringPiISR(PIN_R, INT_EDGE_BOTH, &myInterrupt1);
   pinMode (PIN_W, OUTPUT) ;
 
