@@ -1,2 +1,4 @@
 #!/bin/bash
-curl --silent http://metaphorpsum.com/sentences/3 | sudo ./blink
+sudo ./rfread &
+curl --silent http://metaphorpsum.com/sentences/1 | sudo ./rfwrite
+sudo kill $!

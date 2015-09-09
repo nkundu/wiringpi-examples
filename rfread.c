@@ -7,7 +7,6 @@
 #include "manchester.h"
 
 
-#define	PIN_W	(0)
 #define PIN_R   (1)
 #define DELAY   (20)
 
@@ -85,38 +84,11 @@ void myInterrupt1(void)
   }
 };
 
-void setLow()
-{
-  digitalWrite(PIN_W, LOW);
-}
-
-void setHigh()
-{
-  digitalWrite(PIN_W, HIGH);
-}
-
 int main (void)
 {
-  int c;
-  int i;
-  printf ("Raspberry Pi slow radio link\n") ;
-
+  piHiPri(99);
   wiringPiSetup () ;
   wiringPiISR(PIN_R, INT_EDGE_BOTH, &myInterrupt1);
-  pinMode (PIN_W, OUTPUT) ;
-
-  //printf("write preamble\n");
-  manchesterWritePreamble(DELAY, delay, setLow, setHigh);
-  //printf("write data\n");
-  for (;;)
-  {
-    c = getchar();
-    if (EOF == c)
-      break;
-    manchesterWrite((char)c, DELAY, delay, setLow, setHigh);
-    //printf ("wrote 0x%08X\n", c);
-  }
-
-  printf("done\n");
+  for (;;) delay(1000);
   return 0 ;
 }
