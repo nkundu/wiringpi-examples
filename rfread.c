@@ -17,17 +17,25 @@ enum event_type { PULSE, SPACE };
 
 enum decoder_state current_state = START;
 
+int locked = 0;
 int count = 0;
 char buf = 0x00;
-void emit(char c)
+inline void emit(char c)
 {
 	buf <<= 1;
 	buf |= (0x01 & c);
 	count++;
 	if (count == 8)
 	{
-		putchar(buf);
-		fflush(stdout);
+		if (!locked && buf == 0xFE)
+		{
+			locked = 1;
+		}
+		else
+		{
+			putchar(buf);
+			fflush(stdout);
+		}
 		count = 0;
 		buf = 0x00;
 	}
@@ -45,28 +53,32 @@ void myInterrupt1(void)
 
   type = digitalRead(PIN_R) == HIGH ? SPACE : PULSE;
 
-
   if (read_ticks < 0.5 * DELAY * 1000)
   {
+    current_state = START;
     return;
   }
   else if (read_ticks > 0.5 * DELAY * 1000 && read_ticks < 1.5 * DELAY * 1000)
   {
     length = SHORT;
   }
-  else
+  else if (read_ticks < 2.5 * DELAY * 1000)
   {
     length = LONG;
+  }
+  else
+  {
+    current_state = START;
+    return;
   }
 
   switch (current_state)
   {
   case START:
-    emit(1);
-    current_state = MID1;
+    emit(1); current_state = MID1;
     break;
   case START1:
-    if (length == SHORT && type == SPACE) {emit(1); current_state = MID1; }
+    if (length == SHORT && type == SPACE) { emit(1); current_state = MID1; }
     break;
   case MID1:
     if (length == SHORT && type == PULSE) { current_state = START1; }

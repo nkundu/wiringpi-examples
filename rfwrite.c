@@ -10,12 +10,12 @@
 #define	PIN_W	(0)
 #define DELAY   (20)
 
-void setLow()
+inline void setLow()
 {
   digitalWrite(PIN_W, LOW);
 }
 
-void setHigh()
+inline void setHigh()
 {
   digitalWrite(PIN_W, HIGH);
 }

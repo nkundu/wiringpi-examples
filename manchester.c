@@ -6,16 +6,18 @@ int manchesterRead(int T, char *buf, int bufsz, int *counts, void (*delay)(unsig
 	return 0;
 }
 
-void manchesterWritePreamble(int T, void (*delay)(unsigned int), void (*setLow)(void), void (*setHigh)(void))
+inline void manchesterWritePreamble(int T, void (*delay)(unsigned int), void (*setLow)(void), void (*setHigh)(void))
 {
 	char c;
 
-	c = 0b11111110;
+	c = 0xFF;
+	manchesterWrite(c, T, delay, setLow, setHigh);
+	c = 0xFE;
 	manchesterWrite(c, T, delay, setLow, setHigh);
 
 }
 
-void manchesterWrite(char c, int T, void (*delay)(unsigned int), void (*setLow)(void), void (*setHigh)(void))
+inline void manchesterWrite(char c, int T, void (*delay)(unsigned int), void (*setLow)(void), void (*setHigh)(void))
 {
 	int i;
 	setHigh();
