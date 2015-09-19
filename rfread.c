@@ -31,7 +31,7 @@ inline void emit(char c)
 		{
 			locked = 1;
 		}
-		else
+		else if (locked)
 		{
 			putchar(buf);
 			fflush(stdout);
