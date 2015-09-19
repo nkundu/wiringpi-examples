@@ -45,7 +45,7 @@ SRC	=	blink.c blink8.c blink12.c					\
 		delayTest.c serialRead.c serialTest.c okLed.c ds1302.c		\
 		lowPower.c							\
 		rht03.c piglow.c                                                \
-                manchester.c rfread.c rfwrite.c
+                manchester.c rfread.c rfwrite.c dht11.c
 
 OBJ	=	$(SRC:.c=.o)
 
@@ -57,6 +57,10 @@ all:
 	@echo ""
 
 really-all:	$(BINS)
+
+dht11: dht11.o
+	@echo [link]
+	@$(CC) -o $@ dht11.o $(LDFLAGS) $(LDLIBS)	
 
 rfwrite: rfwrite.o manchester.o
 	@echo [link]
