@@ -87,12 +87,11 @@ static int read_dht22_dat()
         if ((dht22_dat[2] & 0x80) != 0)  t *= -1;
 
 
-    printf("Humidity = %.2f %% Temperature = %.2f *C \n", h, t );
+    printf("%.2f\n%.2f\n", h, 9 * t / 5 + 32);
     return 1;
   }
   else
   {
-    printf("Data not good, skip\n");
     return 0;
   }
 }
@@ -100,17 +99,12 @@ static int read_dht22_dat()
 int main (int argc, char *argv[])
 {
 
-  if (argc != 2)
-    printf ("usage: %s <pin>\ndescription: pin is the wiringPi pin number\nusing 7 (GPIO 4)\n",argv[0]);
-  else
+  if (argc == 2)
     DHTPIN = atoi(argv[1]);
-   
-
-  printf ("Raspberry Pi wiringPi DHT22 reader\n") ;
 
   if (wiringPiSetup () == -1)
     exit(EXIT_FAILURE) ;
-	
+
   while (read_dht22_dat() == 0) 
   {
      delay(1000); // wait 1sec to refresh
